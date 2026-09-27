@@ -7,39 +7,13 @@ import { motion, AnimatePresence } from "framer-motion"
 import { TextAnimate } from "./ui/text-animate"
 
 const lyrics = [
-
-    {
-        text: "Tera hone laga hoon",
-        duration: 4500,
-        anim: 1.8,
-    },
-    {
-        text: "Khone laga hoon",
-        duration: 4000,
-        anim: 1.6,
-    },
-    {
-        text: "Jab se mila hoon",
-        duration: 4000,
-        anim: 1.7,
-    },
-    {
-        text: "Tera hone laga hoon",
-        duration: 3200,
-        anim: 1.8,
-    },
-    {
-        text: "Khone laga hoon",
-        duration: 2800,
-        anim: 1.6,
-    },
-    {
-        text: "Jab se mila hoon",
-        duration: 3200,
-        anim: 1.8,
-    },
-    
-  ]
+    { text: "Tera hone laga hoon", duration: 4000, anim: 2.5 },
+    { text: "Khone laga hoon", duration: 3000, anim: 2.2 },
+    { text: "Jab se mila hoon", duration: 3500, anim: 2.3 },
+    { text: "Tera hone laga hoon", duration: 4000, anim: 2.5 },
+    { text: "Khone laga hoon", duration: 3000, anim: 2.2 },
+    { text: "Jab se mila hoon", duration: 3500, anim: 2.3 },
+  ]  
   
 
 export default function LyricsScreen({ onComplete }) {

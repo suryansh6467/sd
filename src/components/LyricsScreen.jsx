@@ -7,14 +7,14 @@ import { motion, AnimatePresence } from "framer-motion"
 import { TextAnimate } from "./ui/text-animate"
 
 const lyrics = [
-    const lyrics = [
+
     { text: "Tera hone laga hoon", duration: 2800, anim: 1.8 },
     { text: "Khone laga hoon", duration: 2600, anim: 1.6 },
     { text: "Jab se mila hoon", duration: 3000, anim: 1.8 },
     { text: "Tera hone laga hoon", duration: 2800, anim: 1.8 },
     { text: "Khone laga hoon", duration: 2600, anim: 1.6 },
     { text: "Jab se mila hoon", duration: 3200, anim: 1.8 },
-    ]
+    
   ]  
   
 

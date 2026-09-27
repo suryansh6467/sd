@@ -8,18 +8,12 @@ const lyricLines = [
   "खोने लगा हूँ, जब से मिला",
 ]
 
-interface LyricsScreenProps {
-  onComplete?: () => void
-  typingSpeed?: number // Ek character type hone ka time (ms)
-  lineDelay?: number   // Agli line shuru hone ka pause (ms)
-}
-
 export default function LyricsScreen({
   onComplete,
   typingSpeed = 85,
   lineDelay = 600,
-}: LyricsScreenProps) {
-  const [displayedLines, setDisplayedLines] = useState<string[]>([])
+}) {
+  const [displayedLines, setDisplayedLines] = useState([])
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentCharIndex, setCurrentCharIndex] = useState(0)
   const [isFinished, setIsFinished] = useState(false)
@@ -27,7 +21,7 @@ export default function LyricsScreen({
   useEffect(() => {
     if (currentLineIndex >= lyricLines.length) {
       setIsFinished(true)
-      onComplete?.()
+      if (onComplete) onComplete()
       return
     }
 
@@ -45,7 +39,7 @@ export default function LyricsScreen({
 
       return () => clearTimeout(charTimer)
     } else {
-      // Line complete hone par thoda pause le kar agli line par switch karein
+      // Line complete hone par delay
       const lineTimer = setTimeout(() => {
         setCurrentLineIndex((prev) => prev + 1)
         setCurrentCharIndex(0)
@@ -62,13 +56,13 @@ export default function LyricsScreen({
           {displayedLines.map((line, idx) => (
             <div key={idx} className="flex items-center flex-wrap">
               <span>{line}</span>
-              {/* Cursor sirf active typing line ke aage dikhega */}
+              {/* Active line par cursor dikhana */}
               {idx === currentLineIndex && !isFinished && (
                 <span className="ml-1.5 inline-block h-6 w-2.5 bg-[#8f9aa6] animate-pulse align-middle" />
               )}
             </div>
           ))}
-          {/* Pehle word start hone se pehle ka blinking cursor */}
+          {/* Pehla word shuru hone se pehle cursor */}
           {displayedLines.length === 0 && (
             <span className="inline-block h-6 w-2.5 bg-[#8f9aa6] animate-pulse align-middle" />
           )}

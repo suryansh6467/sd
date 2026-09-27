@@ -10,17 +10,17 @@ const lyrics = [
 
     {
         text: "Tera hone laga hoon",
-        duration: 3200,
+        duration: 4500,
         anim: 1.8,
     },
     {
         text: "Khone laga hoon",
-        duration: 2800,
+        duration: 4000,
         anim: 1.6,
     },
     {
         text: "Jab se mila hoon",
-        duration: 3000,
+        duration: 4000,
         anim: 1.7,
     },
     {

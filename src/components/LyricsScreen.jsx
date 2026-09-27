@@ -14,6 +14,7 @@ const lyrics = [
     { text: "Tera hone laga hoon", duration: 2800, anim: 1.8 },
     { text: "Khone laga hoon", duration: 2600, anim: 1.6 },
     { text: "Jab se mila hoon", duration: 3200, anim: 1.8 },
+    ]
   ]  
   
 

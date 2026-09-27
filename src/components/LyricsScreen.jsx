@@ -1,93 +1,79 @@
 "use client"
 
-export const dynamic = "force-static"
+import { useState, useEffect } from "react"
 
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { TextAnimate } from "./ui/text-animate"
-
-const lyrics = [
-    { text: "Tera hone laga hoon", start: 0 },
-    { text: "Khone laga hoon", start: 3.2 },
-    { text: "Jab se mila hoon", start: 6.7 },
-    { text: "Tera hone laga hoon", start: 10.5 },
-    { text: "Khone laga hoon", start: 14.5 },
-    { text: "Jab se mila hoon", start: 18.7 },
+const lyricLines = [
+  "हुआ, मुझे भी प्यार हुआ",
+  "तेरा होने लगा हूँ",
+  "खोने लगा हूँ, जब से मिला",
 ]
 
-export default function LyricsScreen({ audioRef, onComplete }) {
-    const [currentLyricIndex, setCurrentLyricIndex] = useState(0)
+interface LyricsScreenProps {
+  onComplete?: () => void
+  typingSpeed?: number // Ek character type hone ka time (ms)
+  lineDelay?: number   // Agli line shuru hone ka pause (ms)
+}
 
-    useEffect(() => {
-        const audio = audioRef?.current
+export default function LyricsScreen({
+  onComplete,
+  typingSpeed = 85,
+  lineDelay = 600,
+}: LyricsScreenProps) {
+  const [displayedLines, setDisplayedLines] = useState<string[]>([])
+  const [currentLineIndex, setCurrentLineIndex] = useState(0)
+  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [isFinished, setIsFinished] = useState(false)
 
-        if (!audio) return
+  useEffect(() => {
+    if (currentLineIndex >= lyricLines.length) {
+      setIsFinished(true)
+      onComplete?.()
+      return
+    }
 
-        const updateLyrics = () => {
-            const time = audio.currentTime
+    const targetLine = lyricLines[currentLineIndex]
 
-            let index = 0
+    if (currentCharIndex < targetLine.length) {
+      const charTimer = setTimeout(() => {
+        setDisplayedLines((prev) => {
+          const updated = [...prev]
+          updated[currentLineIndex] = targetLine.slice(0, currentCharIndex + 1)
+          return updated
+        })
+        setCurrentCharIndex((prev) => prev + 1)
+      }, typingSpeed)
 
-            for (let i = lyrics.length - 1; i >= 0; i--) {
-                if (time >= lyrics[i].start) {
-                    index = i
-                    break
-                }
-            }
+      return () => clearTimeout(charTimer)
+    } else {
+      // Line complete hone par thoda pause le kar agli line par switch karein
+      const lineTimer = setTimeout(() => {
+        setCurrentLineIndex((prev) => prev + 1)
+        setCurrentCharIndex(0)
+      }, lineDelay)
 
-            setCurrentLyricIndex(index)
+      return () => clearTimeout(lineTimer)
+    }
+  }, [currentLineIndex, currentCharIndex, typingSpeed, lineDelay, onComplete])
 
-            if (
-                index === lyrics.length - 1 &&
-                time >= lyrics[index].start
-            ) {
-                onComplete?.()
-            }
-        }
-
-        audio.addEventListener("timeupdate", updateLyrics)
-
-        return () => {
-            audio.removeEventListener("timeupdate", updateLyrics)
-        }
-    }, [audioRef, onComplete])
-
-    return (
-        <div className="w-full max-w-3xl flex items-center justify-center px-5">
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={currentLyricIndex}
-                    initial={{
-                        opacity: 0,
-                        y: 15,
-                        filter: "blur(8px)",
-                    }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                        filter: "blur(0px)",
-                    }}
-                    exit={{
-                        opacity: 0,
-                        y: -15,
-                        filter: "blur(8px)",
-                    }}
-                    transition={{
-                        duration: 0.45,
-                        ease: "easeOut",
-                    }}
-                    className="text-center"
-                >
-                    <TextAnimate
-                        by="word"
-                        duration={0.8}
-                        animation="blurInUp"
-                        className="text-4xl md:text-5xl lg:text-6xl text-foreground drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] text-balance leading-normal"
-                    >
-                        {lyrics[currentLyricIndex].text}
-                    </TextAnimate>
-                </motion.div>
-            </AnimatePresence>
+  return (
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#262c33] p-6 font-sans">
+      <div className="w-full max-w-lg text-left">
+        <div className="text-2xl md:text-3xl font-semibold leading-relaxed tracking-wide text-white">
+          {displayedLines.map((line, idx) => (
+            <div key={idx} className="flex items-center flex-wrap">
+              <span>{line}</span>
+              {/* Cursor sirf active typing line ke aage dikhega */}
+              {idx === currentLineIndex && !isFinished && (
+                <span className="ml-1.5 inline-block h-6 w-2.5 bg-[#8f9aa6] animate-pulse align-middle" />
+              )}
+            </div>
+          ))}
+          {/* Pehle word start hone se pehle ka blinking cursor */}
+          {displayedLines.length === 0 && (
+            <span className="inline-block h-6 w-2.5 bg-[#8f9aa6] animate-pulse align-middle" />
+          )}
         </div>
-    )
+      </div>
+    </div>
+  )
 }

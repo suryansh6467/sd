@@ -8,11 +8,11 @@ import { TextAnimate } from "./ui/text-animate"
 
 const lyrics = [
     { text: "Tera hone laga hoon", duration: 4000, anim: 2.5 },
-    { text: "Khone laga hoon", duration: 3000, anim: 2.2 },
-    { text: "Jab se mila hoon", duration: 3500, anim: 2.3 },
-    { text: "Tera hone laga hoon", duration: 4000, anim: 2.5 },
-    { text: "Khone laga hoon", duration: 3000, anim: 2.2 },
-    { text: "Jab se mila hoon", duration: 3500, anim: 2.3 },
+    { text: "Khone laga hoon", duration: 5000, anim: 2.2 },
+    { text: "Jab se mila hoon", duration: 6000, anim: 2.3 },
+    { text: "Tera hone laga hoon", duration: 7000, anim: 2.5 },
+    { text: "Khone laga hoon", duration: 8000, anim: 2.2 },
+    { text: "Jab se mila hoon", duration: 8500, anim: 2.3 },
   ]  
   
 
